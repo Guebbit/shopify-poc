@@ -1,0 +1,30 @@
+{
+    "header": {
+        "cart": "Cart",
+        "language": "Language"
+    },
+    "product": {
+        "loading": "Loading product…",
+        "loadError": "Could not load the product: {message}",
+        "noImage": "No image available",
+        "giftWrap": "Gift wrap this product",
+        "giftMessage": "Gift message (optional)",
+        "giftMessagePlaceholder": "Happy birthday!",
+        "addToCart": "Add to cart",
+        "adding": "Adding…",
+        "soldOut": "Sold out",
+        "added": "Added to cart",
+        "viewCart": "view cart",
+        "addError": "Add to cart failed"
+    },
+    "cart": {
+        "title": "Your cart",
+        "loading": "Loading cart…",
+        "loadError": "Could not load the cart: {message}",
+        "empty": "Your cart is empty",
+        "backToProduct": "back to the product",
+        "quantity": "Qty {count}",
+        "giftWrapped": "Gift wrapped",
+        "subtotal": "Subtotal: {amount}"
+    }
+}

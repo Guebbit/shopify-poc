@@ -1,0 +1,11 @@
+@import 'tailwindcss';
+
+/*
+ * Only custom CSS in the app: Tailwind theme tokens for the Callmewine brand.
+ * Everything else is styled with Tailwind utilities in the components.
+ */
+@theme {
+    --color-primary: #7b1e3a;
+    --color-primary-dark: #5e152c;
+    --color-primary-light: #9b3a55;
+}

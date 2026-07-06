@@ -1,0 +1,30 @@
+{
+    "header": {
+        "cart": "Panier",
+        "language": "Langue"
+    },
+    "product": {
+        "loading": "Chargement du produit…",
+        "loadError": "Impossible de charger le produit : {message}",
+        "noImage": "Aucune image disponible",
+        "giftWrap": "Emballage cadeau",
+        "giftMessage": "Message cadeau (facultatif)",
+        "giftMessagePlaceholder": "Joyeux anniversaire !",
+        "addToCart": "Ajouter au panier",
+        "adding": "Ajout en cours…",
+        "soldOut": "Épuisé",
+        "added": "Ajouté au panier",
+        "viewCart": "voir le panier",
+        "addError": "Échec de l'ajout au panier"
+    },
+    "cart": {
+        "title": "Votre panier",
+        "loading": "Chargement du panier…",
+        "loadError": "Impossible de charger le panier : {message}",
+        "empty": "Votre panier est vide",
+        "backToProduct": "retour au produit",
+        "quantity": "Qté {count}",
+        "giftWrapped": "Emballé en cadeau",
+        "subtotal": "Sous-total : {amount}"
+    }
+}

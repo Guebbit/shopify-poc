@@ -13,14 +13,6 @@ function createApiInstance() {
         timeout: Number(config.public.axiosTimeout)
     });
 
-    instance.interceptors.request.use((requestConfig) => {
-        const token = useCookie<string | null>('auth_token').value;
-        if (token) {
-            requestConfig.headers.Authorization = `Bearer ${token}`;
-        }
-        return requestConfig;
-    });
-
     instance.interceptors.response.use(
         (response) => response,
         (error: AxiosError) => Promise.reject(error)

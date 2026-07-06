@@ -1,0 +1,30 @@
+{
+    "header": {
+        "cart": "Carrello",
+        "language": "Lingua"
+    },
+    "product": {
+        "loading": "Caricamento prodotto…",
+        "loadError": "Impossibile caricare il prodotto: {message}",
+        "noImage": "Nessuna immagine disponibile",
+        "giftWrap": "Confeziona come regalo",
+        "giftMessage": "Messaggio di auguri (facoltativo)",
+        "giftMessagePlaceholder": "Buon compleanno!",
+        "addToCart": "Aggiungi al carrello",
+        "adding": "Aggiunta in corso…",
+        "soldOut": "Esaurito",
+        "added": "Aggiunto al carrello",
+        "viewCart": "vedi carrello",
+        "addError": "Aggiunta al carrello non riuscita"
+    },
+    "cart": {
+        "title": "Il tuo carrello",
+        "loading": "Caricamento carrello…",
+        "loadError": "Impossibile caricare il carrello: {message}",
+        "empty": "Il tuo carrello è vuoto",
+        "backToProduct": "torna al prodotto",
+        "quantity": "Qtà {count}",
+        "giftWrapped": "Confezione regalo",
+        "subtotal": "Subtotale: {amount}"
+    }
+}

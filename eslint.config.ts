@@ -33,7 +33,8 @@ export default defineConfigWithVueTs(
         '.data',
         'eslint.config.ts',
         'public/mockServiceWorker.js',
-        'tests/mocks/generated.ts'
+        'tests/mocks/generated.ts',
+        'app/graphql/generated'
     ]),
 
     /**
@@ -92,6 +93,8 @@ export default defineConfigWithVueTs(
             'no-nested-ternary': 'off',
             'unicorn/no-nested-ternary': 'off',
             'unicorn/prefer-top-level-await': 'off',
+            // Repo style: promise chaining preferred over async/await.
+            'unicorn/prefer-await': 'off',
 
             '@typescript-eslint/restrict-plus-operands': [
                 'error',
@@ -256,10 +259,12 @@ export default defineConfigWithVueTs(
         }
     },
     {
-        // Alias keys like '@api' come from Nuxt's `alias` option, not authored identifiers.
-        files: ['nuxt.config.ts'],
+        // Config keys like '@api' aliases or codegen output paths are not authored identifiers;
+        // loading .env at top level is how CLI config files work.
+        files: ['nuxt.config.ts', 'codegen.ts'],
         rules: {
-            '@typescript-eslint/naming-convention': 'off'
+            '@typescript-eslint/naming-convention': 'off',
+            'unicorn/no-top-level-side-effects': 'off'
         }
     },
     {

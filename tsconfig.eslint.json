@@ -16,6 +16,7 @@
         "vitest.config.ts",
         "nuxt.config.ts",
         "orval.config.ts",
+        "codegen.ts",
         "eslint.config.ts"
     ],
     "compilerOptions": {
