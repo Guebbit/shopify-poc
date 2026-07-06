@@ -1,0 +1,7 @@
+{
+    "extends": "./tsconfig.eslint.json",
+    "include": ["cypress/**/*", "cypress.config.ts"],
+    "compilerOptions": {
+        "types": ["node", "cypress"]
+    }
+}

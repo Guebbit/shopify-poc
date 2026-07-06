@@ -1,0 +1,25 @@
+{
+    "extends": "./.nuxt/tsconfig.app.json",
+    "exclude": [],
+    "include": [
+        "app/**/*.ts",
+        "app/**/*.tsx",
+        "app/**/*.vue",
+        "server/**/*.ts",
+        "shared/**/*.ts",
+        "tests/**/*.ts",
+        "tests/**/*.tsx",
+        "tests/**/*.vue",
+        "scripts/**/*.ts",
+        "cypress/**/*.ts",
+        "cypress.config.ts",
+        "vitest.config.ts",
+        "nuxt.config.ts",
+        "orval.config.ts",
+        "eslint.config.ts"
+    ],
+    "compilerOptions": {
+        "types": ["node"],
+        "allowJs": true
+    }
+}

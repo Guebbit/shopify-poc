@@ -4,7 +4,13 @@
 .nuxt
 .nitro
 .cache
+.nuxtrc
 dist
+
+# Test/coverage outputs
+coverage
+cypress/screenshots
+cypress/videos
 
 # Node dependencies
 node_modules

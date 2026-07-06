@@ -1,17 +1,69 @@
 {
-  "name": "shopify-poc",
-  "type": "module",
-  "private": true,
-  "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
-  },
-  "dependencies": {
-    "nuxt": "^4.4.8",
-    "vue": "^3.5.38",
-    "vue-router": "^5.1.0"
-  }
+    "name": "shopify-poc",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "build": "npm run genapi && npm run build-only",
+        "build-only": "nuxt build",
+        "dev": "nuxt dev",
+        "generate": "nuxt generate",
+        "preview": "nuxt preview",
+        "postinstall": "nuxt prepare",
+        "genapi": "orval --config orval.config.ts",
+        "lint": "oxlint . && eslint .",
+        "lint:fix": "oxlint . --fix && eslint . --fix",
+        "lint:openapi": "spectral lint openapi.yaml --ruleset spectral.yaml",
+        "prettier": "npx prettier .",
+        "prettier:check": "npx prettier --check .",
+        "prettier:fix": "npx prettier . --write",
+        "type-check-only": "vue-tsc --noEmit",
+        "test": "npm run test:unit && npm run test:e2e",
+        "test:unit": "vitest run",
+        "test:e2e": "start-server-and-test dev http://localhost:${VITE_APP_PORT:-3000} 'cypress run'",
+        "complete": "npm run build && npm run lint:fix && npm run lint:openapi && npm run prettier:fix && npm run test",
+        "complete:check": "npm run lint && npm run prettier:check && npm run type-check-only",
+        "prepare": "husky"
+    },
+    "dependencies": {
+        "nuxt": "^4.4.8",
+        "vue": "^3.5.38",
+        "vue-router": "^5.1.0"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^21.2.0",
+        "@commitlint/config-conventional": "^21.2.0",
+        "@eslint/js": "^10.0.1",
+        "@faker-js/faker": "^10.5.0",
+        "@nuxt/test-utils": "^4.0.3",
+        "@stoplight/spectral-cli": "^6.16.1",
+        "@vitest/eslint-plugin": "^1.6.21",
+        "@vue/eslint-config-typescript": "^14.9.0",
+        "@vue/test-utils": "^2.4.11",
+        "axios": "^1.18.1",
+        "cypress": "^15.18.0",
+        "eslint": "^10.6.0",
+        "eslint-plugin-cypress": "^6.4.2",
+        "eslint-plugin-oxlint": "^1.72.0",
+        "eslint-plugin-unicorn": "^71.0.0",
+        "eslint-plugin-vue": "^10.9.2",
+        "globals": "^17.7.0",
+        "happy-dom": "^20.10.6",
+        "husky": "^9.1.7",
+        "msw": "^2.14.6",
+        "orval": "^8.20.0",
+        "oxlint": "^1.72.0",
+        "prettier": "^3.9.4",
+        "start-server-and-test": "^2.1.2",
+        "typescript": "^6.0.3",
+        "vitest": "^4.1.10",
+        "vue-tsc": "^3.3.6",
+        "zod": "^4.4.3"
+    },
+    "allowScripts": {
+        "@parcel/watcher@2.5.6": true,
+        "@scarf/scarf@1.4.0": true,
+        "cypress@15.18.0": true,
+        "esbuild@0.28.1": true,
+        "msw@2.14.6": true
+    }
 }

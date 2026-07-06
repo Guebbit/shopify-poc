@@ -1,0 +1,15 @@
+dist
+node_modules
+.claude
+types
+.dev
+docs
+api
+.nuxt
+.output
+coverage
+package-lock.json
+tests/mocks/generated.ts
+public/mockServiceWorker.js
+*.insomnia*
+Insomnia_*.json

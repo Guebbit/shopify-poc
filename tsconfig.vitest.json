@@ -1,0 +1,8 @@
+{
+    "extends": "./tsconfig.eslint.json",
+    "include": ["app/**/*", "tests/**/*", "vitest.config.ts"],
+    "exclude": ["cypress/**/*", "cypress.config.ts"],
+    "compilerOptions": {
+        "types": ["node", "vitest/globals"]
+    }
+}
