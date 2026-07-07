@@ -14,7 +14,11 @@ describe('smoke', () => {
     });
 
     it('loads the PDP with product, prices and gift option', () => {
-        cy.visit('/');
+        // Reach the PDP via client-side navigation from the client-only cart page:
+        // a full-page visit would render the PDP on the server, where the
+        // ProductDetail request never reaches the browser and cy.intercept.
+        cy.visit('/cart');
+        cy.contains('a', 'back to the product', { timeout: 30_000 }).click();
         cy.wait('@ProductDetail', { timeout: 30_000 });
         cy.contains('h1', PRODUCT_TITLE);
         cy.contains('€42.50');

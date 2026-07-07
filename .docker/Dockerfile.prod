@@ -1,0 +1,40 @@
+# Production image: builds the app, then ships only the self-contained
+# Nitro bundle (.output) — no node_modules or sources in the final image.
+# Official node 24 built on Alpine Linux (small).
+
+# --- Build stage: compiles the Nitro server + client assets into .output ---
+FROM node:24-alpine AS build
+
+WORKDIR /app
+
+COPY package*.json ./
+
+# Install all dependencies (devDependencies included, needed for the build).
+# --ignore-scripts: lifecycle scripts can't run at this stage — "prepare" (husky)
+# needs the .git directory and "postinstall" (nuxt prepare) needs the project
+# sources, neither of which is in the image yet. Neither is needed here anyway:
+# git hooks are host-only and "nuxt build" regenerates .nuxt itself.
+RUN npm ci --ignore-scripts
+
+COPY . .
+
+# genapi (orval) then nuxt build; gengql is not run here — the generated
+# GraphQL transport is committed (regenerating needs live store credentials).
+RUN npm run build
+
+# --- Runtime: only the .output bundle from the build stage above ---
+FROM node:24-alpine
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+COPY --from=build /app/.output ./.output
+
+# Nitro node-server preset reads PORT/HOST at runtime; Shopify settings come in
+# as NUXT_PUBLIC_SHOPIFY_* env vars (runtimeConfig), so no .env is baked in.
+ENV PORT=8080
+ENV HOST=0.0.0.0
+EXPOSE 8080
+
+CMD ["node", ".output/server/index.mjs"]

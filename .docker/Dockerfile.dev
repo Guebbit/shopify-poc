@@ -1,0 +1,26 @@
+# Dev image: runs the Nuxt dev server (compose default).
+# Official node 24 built on Alpine Linux (small).
+FROM node:24-alpine
+
+# Sets the working directory inside the image to /app in the container
+WORKDIR /app
+
+# Copies package.json and package-lock.json from the host folder into the /app in the image
+COPY package*.json ./
+
+# Install all dependencies (including devDependencies for the Nuxt dev server).
+# --ignore-scripts: lifecycle scripts can't run at this stage — "prepare" (husky)
+# needs the .git directory and "postinstall" (nuxt prepare) needs the project
+# sources, neither of which is in the image yet. Neither is needed here anyway:
+# git hooks are host-only and "nuxt dev" regenerates .nuxt itself.
+RUN npm ci --ignore-scripts
+
+# Copy all the project files (docker-compose bind-mounts the live source over this)
+COPY . .
+
+# Nuxt dev server port (see devServer.port in nuxt.config.ts)
+EXPOSE 8080
+
+# Images default commands to be executed at RUNTIME. Must be in JSON array format.
+# --host 0.0.0.0: bind on all interfaces so the published port is reachable from the host.
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

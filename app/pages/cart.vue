@@ -3,17 +3,22 @@
  * Cart page: loads the persisted cart and renders lines
  * including gift wrap flag and gift message from line attributes.
  */
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
+const { t, locale } = useI18n();
+const localePath = useLocalePath();
+const formatMoney = useFormatMoney();
 const cartStore = useCartStore();
 const { cart } = storeToRefs(cartStore);
 
 // Cart is always network: totals and availability change server-side,
-// and Nuxt 4 would otherwise reuse the payload across visits.
-const { pending, error } = useAsyncData('cart', cartStore.fetchCart, {
-    getCachedData: () => {}
-});
+// so its freshness window is zero (Nuxt would otherwise reuse the payload across visits).
+const CART_TTL_MS = 0;
+
+// Locale-scoped key: a language switch refetches so line titles/pricing follow @inContext.
+const { pending, error } = useCachedAsyncData(
+    () => `cart:${locale.value}`,
+    cartStore.fetchCart,
+    CART_TTL_MS
+);
 
 /*
  * View model: contract cart lines with gift info decoded from line attributes.
@@ -43,7 +48,7 @@ const lines = computed(
             class="rounded-xl bg-white px-6 py-12 text-center text-neutral-500 shadow-sm"
         >
             {{ t('cart.empty') }} —
-            <NuxtLink to="/" class="font-semibold text-primary underline">
+            <NuxtLink :to="localePath('index')" class="font-semibold text-primary underline">
                 {{ t('cart.backToProduct') }}
             </NuxtLink>
         </p>

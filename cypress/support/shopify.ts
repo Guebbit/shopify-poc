@@ -80,11 +80,36 @@ const giftCart = {
  * Stub the Storefront endpoint. Each operation is aliased by its own name,
  * so specs can cy.wait('@ProductDetail'), cy.wait('@CartLinesAdd'), etc.
  */
-export function interceptShopify(): void {
+export const interceptShopify = (): void => {
     cy.intercept('POST', '**/graphql.json', (request) => {
         const operationName: string = request.body.operationName;
         request.alias = operationName;
         switch (operationName) {
+            // EN + IT only (es/fr unpublished): exercises the switcher narrowing.
+            case 'Localization': {
+                request.reply({
+                    body: {
+                        data: {
+                            localization: {
+                                __typename: 'Localization',
+                                availableLanguages: [
+                                    {
+                                        __typename: 'Language',
+                                        isoCode: 'EN',
+                                        endonymName: 'English'
+                                    },
+                                    {
+                                        __typename: 'Language',
+                                        isoCode: 'IT',
+                                        endonymName: 'Italiano'
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                });
+                break;
+            }
             case 'ProductDetail': {
                 request.reply({ body: { data: productDetail } });
                 break;
@@ -117,6 +142,20 @@ export function interceptShopify(): void {
                 });
                 break;
             }
+            case 'CartBuyerIdentityUpdate': {
+                request.reply({
+                    body: {
+                        data: {
+                            cartBuyerIdentityUpdate: {
+                                __typename: 'CartBuyerIdentityUpdatePayload',
+                                cart: giftCart,
+                                userErrors: []
+                            }
+                        }
+                    }
+                });
+                break;
+            }
             case 'Cart': {
                 request.reply({ body: { data: { cart: giftCart } } });
                 break;
@@ -126,4 +165,4 @@ export function interceptShopify(): void {
             }
         }
     });
-}
+};

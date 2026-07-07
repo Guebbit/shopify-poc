@@ -7,11 +7,8 @@ import pluginVue from 'eslint-plugin-vue';
 import pluginVitest from '@vitest/eslint-plugin';
 import pluginCypress from 'eslint-plugin-cypress';
 import pluginOxlint from 'eslint-plugin-oxlint';
-
-// To allow more languages other than `ts` in `.vue` files, uncomment the following lines:
-// import { configureVueProject } from '@vue/eslint-config-typescript'
-// configureVueProject({ scriptLangs: ['ts', 'tsx'] })
-// More info at https://github.com/vuejs/eslint-config-typescript/#advanced-setup
+import pluginVueI18n from '@intlify/eslint-plugin-vue-i18n';
+import parserJsonc from 'jsonc-eslint-parser';
 
 export default defineConfigWithVueTs(
     {
@@ -31,10 +28,7 @@ export default defineConfigWithVueTs(
         '.nuxt',
         '.output',
         '.data',
-        'eslint.config.ts',
-        'public/mockServiceWorker.js',
-        'tests/mocks/generated.ts',
-        'app/graphql/generated'
+        'eslint.config.ts'
     ]),
 
     /**
@@ -55,6 +49,38 @@ export default defineConfigWithVueTs(
     pluginUnicorn.configs['flat/recommended'],
 
     /**
+     * i18n key hygiene: missing/unused keys across i18n/locales/*.json are lint failures,
+     * so the four vocabularies cannot drift apart silently.
+     * Registered manually instead of the shipped recommended config, which would make
+     * every JSON in the repo lintable and drag the typed TS rules onto them.
+     */
+    {
+        plugins: { '@intlify/vue-i18n': pluginVueI18n },
+        settings: {
+            'vue-i18n': {
+                localeDir: './i18n/locales/*.json',
+                messageSyntaxVersion: '^11.0.0'
+            }
+        }
+    },
+    {
+        files: ['**/*.{ts,mts,tsx,vue}'],
+        rules: {
+            // t('some.key') must exist in every locale file.
+            '@intlify/vue-i18n/no-missing-keys': 'error'
+        }
+    },
+    {
+        files: ['i18n/locales/*.json'],
+        languageOptions: { parser: parserJsonc },
+        rules: {
+            '@intlify/vue-i18n/no-unused-keys': ['error', { extensions: ['.ts', '.vue'] }],
+            '@intlify/vue-i18n/no-html-messages': 'error',
+            '@intlify/vue-i18n/valid-message-syntax': 'error'
+        }
+    },
+
+    /**
      * Global parser + dedicated eslint tsconfig
      */
     {
@@ -70,8 +96,11 @@ export default defineConfigWithVueTs(
 
     /**
      * All global rules
+     * Scoped to code files: locale JSONs are lintable too (vue-i18n plugin above)
+     * and typed TS rules would crash on them.
      */
     {
+        files: ['**/*.{ts,mts,tsx,vue}'],
         languageOptions: {
             globals: {
                 ...globals.browser
@@ -88,13 +117,15 @@ export default defineConfigWithVueTs(
             'vue/require-default-prop': 'off',
             'vue/no-v-html': 'off',
             '@typescript-eslint/no-non-null-assertion': 'off',
-            // '@typescript-eslint/no-confusing-void-expression': 'off',
             '@typescript-eslint/use-unknown-in-catch-callback-variable': 'off',
             'no-nested-ternary': 'off',
             'unicorn/no-nested-ternary': 'off',
             'unicorn/prefer-top-level-await': 'off',
             // Repo style: promise chaining preferred over async/await.
             'unicorn/prefer-await': 'off',
+            // Repo style: const + arrow functions instead of `function` declarations.
+            'func-style': ['error', 'expression'],
+            'prefer-arrow-callback': 'error',
 
             '@typescript-eslint/restrict-plus-operands': [
                 'error',
@@ -118,7 +149,7 @@ export default defineConfigWithVueTs(
                     trailingUnderscore: 'allow'
                 },
                 {
-                    selector: ['class', 'typeLike', 'typeParameter', 'enum'],
+                    selector: ['class', 'typeLike', 'typeParameter'],
                     format: ['PascalCase']
                 },
                 {
@@ -150,10 +181,10 @@ export default defineConfigWithVueTs(
                 }
             ],
 
-            // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/HEAD/docs/rules/consistent-destructuring.md
+            // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/HEAD/docs/rules/better-regex.md
             'unicorn/better-regex': 'warn',
 
-            // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/HEAD/docs/rules/better-regex.md
+            // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/HEAD/docs/rules/consistent-destructuring.md
             'unicorn/consistent-destructuring': 'warn',
 
             // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/HEAD/docs/rules/filename-case.md
@@ -193,24 +224,6 @@ export default defineConfigWithVueTs(
                     }
                 }
             ]
-
-            // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/HEAD/docs/rules/string-content.md
-            // 'unicorn/string-content': [
-            //   'error',
-            //   {
-            //     patterns: {
-            //       unicorn: '🦄',
-            //       awesome: {
-            //         suggest: '😎',
-            //         message: 'Please use `😎` instead of `awesome`.',
-            //       },
-            //       cool: {
-            //         suggest: '😎',
-            //         fix: false,
-            //       },
-            //     },
-            //   },
-            // ],
         }
     },
 
@@ -240,13 +253,6 @@ export default defineConfigWithVueTs(
         rules: {
             'unicorn/filename-case': 'off',
             'unicorn/name-replacements': 'off'
-        }
-    },
-    {
-        files: ['scripts/**/*.ts'],
-        rules: {
-            'unicorn/filename-case': 'off',
-            'no-console': 'off'
         }
     },
     {

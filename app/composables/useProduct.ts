@@ -1,23 +1,29 @@
 import type { Product } from '@api';
 import { GetProductResponse } from '@api/schemas';
-import { PRODUCT_DETAIL_QUERY } from '~/graphql/product';
+import { ProductDetailDocument } from '@api/graphql';
 
 /*
  * Fetches the exercise product configured in runtimeConfig.
  * @returns fetchProduct returning the contract Product
  */
-export function useProduct() {
+export const useProduct = () => {
     const { $shopify } = useNuxtApp();
     const { shopifyProductGid } = useRuntimeConfig().public;
+    const shopifyContext = useShopifyContext();
 
     /*
      * Fetch the configured product and map it to the OpenAPI Product contract,
      * validated at the boundary with the generated zod schema.
+     * Localized via @inContext: title/altText translations and market pricing
+     * follow the locale active at call time.
      * @returns contract Product; throws when product/variant is missing or the shape drifts
      */
-    function fetchProduct(): Promise<Product> {
+    const fetchProduct = (): Promise<Product> => {
         return $shopify
-            .query({ query: PRODUCT_DETAIL_QUERY, variables: { id: shopifyProductGid } })
+            .query({
+                query: ProductDetailDocument,
+                variables: { id: shopifyProductGid, ...shopifyContext.value }
+            })
             .then(({ data }) => {
                 const product = data?.product;
                 const variant = product?.variants.nodes[0];
@@ -46,7 +52,7 @@ export function useProduct() {
                     }
                 });
             });
-    }
+    };
 
     return { fetchProduct };
-}
+};

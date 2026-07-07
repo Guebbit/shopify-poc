@@ -1,49 +1,30 @@
 import { defineConfig } from 'orval';
 
 /**
- * Orval configuration: generates the API client from openapi.yaml.
+ * Orval configuration: generates the contract layer from api/rest/openapi.yaml.
  *
- * api:         typed axios functions + TS types → api/index.ts
- *              mutator delegates HTTP to apiMutator (auth headers, token refresh)
+ * The spec is the domain contract only — no REST server exists and no HTTP
+ * client is generated. Shopify calls go through GraphQL (see codegen.ts);
+ * adapters map the responses into these contract shapes.
  *
- * zodSchemas:  Zod schemas matching each OpenAPI model → api/schemas.zod.ts
- *              Import from @api/schemas to validate forms or parse API responses.
- *              Always in sync with the spec — never hand-write these.
+ * target (zod):    Zod schemas matching each OpenAPI model → api/rest/generated/schemas.zod.ts
+ *                  Import from @api/schemas to parse API responses at the boundary.
+ *                  Always in sync with the spec — never hand-write these.
  *
- * mocks:       MSW handler stubs + faker factories → tests/mocks/generated.ts
- *              Use as a skeleton when adding a new endpoint.
- *              The rich in-memory-DB logic stays in tests/mocks/handlers/*.
+ * schemas (types): Plain TS types for the models → api/rest/generated/types/
+ *                  Import from @api; never hand-write types that duplicate the spec.
  */
 export default defineConfig({
-    api: {
-        input: './openapi.yaml',
+    contract: {
+        input: './api/rest/openapi.yaml',
         output: {
             mode: 'single',
-            target: './api/index.ts',
-            client: 'axios',
-            override: {
-                mutator: {
-                    path: './app/utils/apiMutator.ts',
-                    name: 'apiMutator'
-                }
+            client: 'zod',
+            target: './api/rest/generated/schemas.zod.ts',
+            schemas: {
+                path: './api/rest/generated/types',
+                type: 'typescript'
             }
-        }
-    },
-    zodSchemas: {
-        input: './openapi.yaml',
-        output: {
-            mode: 'single',
-            target: './api/schemas.zod.ts',
-            client: 'zod'
-        }
-    },
-    mocks: {
-        input: './openapi.yaml',
-        output: {
-            mode: 'single',
-            target: './tests/mocks/generated.ts',
-            client: 'axios',
-            mock: true
         }
     }
 });

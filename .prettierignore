@@ -9,8 +9,5 @@ api
 .output
 coverage
 package-lock.json
-tests/mocks/generated.ts
-app/graphql/generated
-public/mockServiceWorker.js
 *.insomnia*
 Insomnia_*.json

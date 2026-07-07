@@ -1,0 +1,90 @@
+# Cart fields shared by every cart query/mutation, so all calls return the same shape.
+# Fragments inherit the operation's @inContext, so line titles and money come back localized.
+fragment CartFields on Cart {
+    id
+    totalQuantity
+    cost {
+        subtotalAmount {
+            amount
+            currencyCode
+        }
+    }
+    lines(first: 50) {
+        nodes {
+            id
+            quantity
+            attributes {
+                key
+                value
+            }
+            cost {
+                totalAmount {
+                    amount
+                    currencyCode
+                }
+            }
+            merchandise {
+                ... on ProductVariant {
+                    id
+                    product {
+                        title
+                        vendor
+                        featuredImage {
+                            url
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+# buyerIdentity pins the cart to the visitor's market so pricing/currency and the
+# eventual checkoutUrl follow the storefront locale instead of the shop default.
+mutation CartCreate($language: LanguageCode!, $country: CountryCode!)
+@inContext(language: $language, country: $country) {
+    cartCreate(input: { buyerIdentity: { countryCode: $country } }) {
+        cart {
+            ...CartFields
+        }
+        userErrors {
+            message
+        }
+    }
+}
+
+mutation CartLinesAdd(
+    $cartId: ID!
+    $lines: [CartLineInput!]!
+    $language: LanguageCode!
+    $country: CountryCode!
+) @inContext(language: $language, country: $country) {
+    cartLinesAdd(cartId: $cartId, lines: $lines) {
+        cart {
+            ...CartFields
+        }
+        userErrors {
+            message
+        }
+    }
+}
+
+# Re-pins an existing cart when the visitor switches locale after the cart was created.
+mutation CartBuyerIdentityUpdate($cartId: ID!, $language: LanguageCode!, $country: CountryCode!)
+@inContext(language: $language, country: $country) {
+    cartBuyerIdentityUpdate(cartId: $cartId, buyerIdentity: { countryCode: $country }) {
+        cart {
+            ...CartFields
+        }
+        userErrors {
+            message
+        }
+    }
+}
+
+query Cart($cartId: ID!, $language: LanguageCode!, $country: CountryCode!)
+@inContext(language: $language, country: $country) {
+    cart(id: $cartId) {
+        ...CartFields
+    }
+}

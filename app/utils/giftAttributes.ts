@@ -10,10 +10,10 @@ export const GIFT_MESSAGE_ATTRIBUTE = 'gift_message';
  * @param giftMessage optional custom message, only stored together with gift wrap
  * @returns Storefront-ready line attributes
  */
-export function buildGiftAttributes(
+export const buildGiftAttributes = (
     isGiftWrapped: boolean,
     giftMessage: string
-): CartLineAttribute[] {
+): CartLineAttribute[] => {
     if (!isGiftWrapped) {
         return [];
     }
@@ -23,20 +23,22 @@ export function buildGiftAttributes(
         attributes.push({ key: GIFT_MESSAGE_ATTRIBUTE, value: message });
     }
     return attributes;
-}
+};
 
 /*
  * Read the gift options back from cart line attributes.
  * @param attributes attributes returned by the cart query
  * @returns gift wrap flag and message (undefined when absent)
  */
-export function parseGiftAttributes(attributes: CartLineAttribute[]): {
+export const parseGiftAttributes = (
+    attributes: CartLineAttribute[]
+): {
     isGiftWrapped: boolean;
     giftMessage: string | undefined;
-} {
+} => {
     const valueOf = (key: string) => attributes.find((attribute) => attribute.key === key)?.value;
     return {
         isGiftWrapped: valueOf(GIFT_WRAP_ATTRIBUTE) === 'true',
         giftMessage: valueOf(GIFT_MESSAGE_ATTRIBUTE)
     };
-}
+};

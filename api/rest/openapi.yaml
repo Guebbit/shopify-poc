@@ -12,7 +12,7 @@ info:
 
         The real implementation calls the Storefront GraphQL API directly; this
         document exists as the domain contract and codegen source (types, zod
-        schemas, MSW mocks).
+        schemas).
     contact:
         name: API Team
 

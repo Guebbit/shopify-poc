@@ -10,8 +10,12 @@ describe('gift purchase flow', () => {
     });
 
     it('adds the product with gift wrap and shows it in the cart', () => {
-        cy.visit('/');
-        // Generous timeout: the first visit pays Vite's on-demand transform cost.
+        // Reach the PDP via client-side navigation from the client-only cart page:
+        // a full-page visit would render the PDP on the server, where the
+        // ProductDetail request never reaches the browser and cy.intercept.
+        // Generous timeouts: the first visit pays Vite's on-demand transform cost.
+        cy.visit('/cart');
+        cy.contains('a', 'back to the product', { timeout: 30_000 }).click();
         cy.wait('@ProductDetail', { timeout: 30_000 });
 
         // Gift message field appears only once gift wrap is checked.

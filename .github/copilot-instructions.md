@@ -14,10 +14,10 @@ This repo = `shopify-poc`.
 - Keep code DRY.
 - Keep code KISS.
 - Prefer composables/stores over duplicated view logic.
-- `openapi.yaml` first. Contract and all generated code starts there.
-- Use generated API functions from `@api` (`api/index.ts`); avoid manual endpoint wrappers unless required.
-- Use generated Zod schemas from `@api/schemas` (`api/schemas.zod.ts`) for form and response validation; never hand-write schemas that duplicate the spec.
-- When adding a new endpoint handler for MSW, start from the generated stub in `tests/mocks/generated.ts`, then move business logic to `tests/mocks/handlers/`.
+- `api/rest/openapi.yaml` first. It is the domain contract; generated types and schemas start there.
+- Use contract types from `@api` (`api/rest/generated/index.ts`); never hand-write types that duplicate the spec.
+- Shopify calls go through the GraphQL documents in `api/graphql/*.graphql`, typed via `@api/graphql` (graphql-codegen); avoid untyped/inline queries.
+- Use generated Zod schemas from `@api/schemas` (`api/rest/generated/schemas.zod.ts`) to validate API responses at the boundary before they enter app state; never hand-write schemas that duplicate the spec.
 - Keep comments short and practical.
 - Avoid `async` / `await` + `try/catch` unless necessary.
 - Comments short. ADHD friendly. Explain function/constant/block fast.

@@ -1,6 +1,6 @@
 import { defineConfig } from 'cypress';
 
-const port = process.env.VITE_APP_PORT ?? '8080';
+const port = process.env.APP_PORT ?? '8080';
 
 export default defineConfig({
     e2e: {

@@ -1,5 +1,4 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { ref } from 'vue';
 import { flushPromises } from '@vue/test-utils';
 import { mockNuxtImport, mountSuspended } from '@nuxt/test-utils/runtime';
 import { clearNuxtData } from '#app';
@@ -41,7 +40,8 @@ beforeEach(() => {
     addToCart.mockReset().mockResolvedValue(undefined);
     fetchProduct.mockReset().mockResolvedValue(product);
     useProductMock.mockReturnValue({ fetchProduct });
-    useCartStoreMock.mockReturnValue({ cart: ref(undefined), addToCart, fetchCart: vi.fn() });
+    // PDP only adds to the cart; badge/cart reads live in the app shell.
+    useCartStoreMock.mockReturnValue({ addToCart });
 });
 
 describe('PDP page', () => {

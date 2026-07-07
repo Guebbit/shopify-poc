@@ -1,0 +1,11 @@
+# Languages the store actually publishes (Shopify Markets settings).
+# Drives the language switcher so we never offer a locale with an untranslated
+# catalog; endonymName is the switcher's option label.
+query Localization {
+    localization {
+        availableLanguages {
+            isoCode
+            endonymName
+        }
+    }
+}

@@ -3,8 +3,9 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 /*
  * GraphQL Codegen: types the Shopify Storefront transport (npm run gengql).
  * Introspects the live schema (needs .env) and generates typed documents from
- * app/graphql/*.ts into app/graphql/generated/ — no handwritten response types.
- * The domain contract stays in openapi.yaml (orval); this only covers transport.
+ * api/graphql/*.graphql into api/graphql/generated/ — no handwritten response
+ * types; app code imports the generated *Document constants.
+ * The domain contract stays in api/rest/openapi.yaml (orval); this only covers transport.
  */
 process.loadEnvFile('.env');
 
@@ -19,14 +20,15 @@ export default {
             }
         }
     ],
-    documents: ['app/graphql/*.ts'],
+    documents: ['api/graphql/*.graphql'],
     generates: {
-        'app/graphql/generated/': {
-            preset: 'client',
-            presetConfig: {
-                // Plain typed results; fragment masking is overkill here.
-                fragmentMasking: false
-            },
+        // Single file: operation types + typed *Document constants.
+        // No client preset: we never write inline gql`` in TS, so its gql.ts/index.ts
+        // artifacts would be dead weight. No base `typescript` plugin either:
+        // typescript-operations is self-contained (used inputs/enums only), the full
+        // schema dump would duplicate them.
+        'api/graphql/generated/graphql.ts': {
+            plugins: ['typescript-operations', 'typed-document-node'],
             config: {
                 // import type: @graphql-typed-document-node/core is types-only, bundlers can't resolve it as a value.
                 useTypeImports: true,

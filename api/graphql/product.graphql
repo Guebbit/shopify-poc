@@ -1,0 +1,28 @@
+# PDP product query: first variant only, no variant selector in this exercise.
+# @inContext localizes title/altText (published translations) and prices (Shopify Markets).
+query ProductDetail($id: ID!, $language: LanguageCode!, $country: CountryCode!)
+@inContext(language: $language, country: $country) {
+    product(id: $id) {
+        id
+        title
+        vendor
+        featuredImage {
+            url
+            altText
+        }
+        variants(first: 1) {
+            nodes {
+                id
+                availableForSale
+                price {
+                    amount
+                    currencyCode
+                }
+                compareAtPrice {
+                    amount
+                    currencyCode
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,13 @@
+# Dependencies are installed inside the image (npm ci); host binaries are glibc, image is musl
+node_modules
+
+# Build/dev artifacts regenerated at runtime
+.nuxt
+.output
+dist
+
+# Not needed in the image
+.git
+.env
+*.log
+coverage

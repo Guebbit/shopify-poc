@@ -11,7 +11,7 @@
  *
  * The real implementation calls the Storefront GraphQL API directly; this
  * document exists as the domain contract and codegen source (types, zod
- * schemas, MSW mocks).
+ * schemas).
  *
  * OpenAPI spec version: 3.0.0
  */

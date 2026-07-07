@@ -1,19 +1,34 @@
 # Frontend Docker Compose configuration
 services:
-    # Frontend app service (Vue/Vite dev server)
+    # Frontend app service (Nuxt dev server)
     app:
         build:
             context: .
-            dockerfile: .docker/Dockerfile
+            dockerfile: .docker/Dockerfile.dev
         restart: unless-stopped
         ports:
-            - '${VITE_APP_PORT:-8080}:${VITE_APP_PORT:-8080}'
+            - '${APP_PORT:-8080}:${APP_PORT:-8080}'
         environment:
             NODE_ENV: 'development'
-            VITE_API_URL: '${VITE_API_URL:-http://localhost:3000}'
-            VITE_API_WEBSOCKET: '${VITE_API_WEBSOCKET:-ws://localhost:3000/ws}'
-            VITE_API_MOCK_ENABLED: '${VITE_API_MOCK_ENABLED:-true}'
+            # Must match the published port above: nuxt.config.ts reads it for devServer.port
+            APP_PORT: '${APP_PORT:-8080}'
         volumes:
             - .:/app:Z
             - /app/node_modules
-        command: ['sh', '-c', 'npm run dev']
+        # --host 0.0.0.0: bind on all interfaces so the published port is reachable from the host
+        command: ['npm', 'run', 'dev', '--', '--host', '0.0.0.0']
+
+    # Production SSR server (Nitro): opt-in via `docker compose --profile production up app-prod`.
+    # Shopify runtimeConfig comes from the host env / .env at RUNTIME, not baked into the image.
+    app-prod:
+        profiles: ['production']
+        build:
+            context: .
+            dockerfile: .docker/Dockerfile.prod
+        restart: unless-stopped
+        ports:
+            - '${APP_PORT:-8080}:8080'
+        environment:
+            NUXT_PUBLIC_SHOPIFY_ENDPOINT: '${NUXT_PUBLIC_SHOPIFY_ENDPOINT:-}'
+            NUXT_PUBLIC_SHOPIFY_TOKEN: '${NUXT_PUBLIC_SHOPIFY_TOKEN:-}'
+            NUXT_PUBLIC_SHOPIFY_PRODUCT_GID: '${NUXT_PUBLIC_SHOPIFY_PRODUCT_GID:-}'

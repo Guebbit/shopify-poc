@@ -3,20 +3,22 @@
  * PDP: renders the configured Shopify product and the add-to-cart form
  * with optional gift wrap + message (stored as cart line attributes).
  */
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
+const { t, locale } = useI18n();
+const localePath = useLocalePath();
+const formatMoney = useFormatMoney();
 const { fetchProduct } = useProduct();
 const cartStore = useCartStore();
 
 // Catalog read: safe to serve from the session cache for a few minutes.
 const PRODUCT_TTL_MS = 5 * 60_000;
 
+// Locale-scoped key: product data is fetched @inContext, so each language
+// caches its own payload and a locale switch triggers a refetch.
 const {
     data: product,
     pending,
     error
-} = useCachedAsyncData('pdp-product', fetchProduct, PRODUCT_TTL_MS);
+} = useCachedAsyncData(() => `pdp-product:${locale.value}`, fetchProduct, PRODUCT_TTL_MS);
 
 const giftWrap = ref(false);
 const giftMessage = ref('');
@@ -27,7 +29,7 @@ const addError = ref<string | undefined>();
 /*
  * Add the product variant to the cart, attaching gift attributes when requested.
  */
-function onAddToCart(): void {
+const onAddToCart = (): void => {
     if (!product.value) return;
     adding.value = true;
     added.value = false;
@@ -43,7 +45,7 @@ function onAddToCart(): void {
         .finally(() => {
             adding.value = false;
         });
-}
+};
 </script>
 
 <template>
@@ -138,7 +140,7 @@ function onAddToCart(): void {
                     class="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800"
                 >
                     {{ t('product.added') }} —
-                    <NuxtLink to="/cart" class="font-semibold underline">
+                    <NuxtLink :to="localePath('cart')" class="font-semibold underline">
                         {{ t('product.viewCart') }}
                     </NuxtLink>
                 </p>

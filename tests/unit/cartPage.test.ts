@@ -33,13 +33,12 @@ const cartFixture: Cart = {
 };
 
 // Plain object with a ref works for storeToRefs: it picks up any ref property.
-function mockCart(cart: Cart | undefined): void {
+const mockCart = (cart: Cart | undefined): void => {
     useCartStoreMock.mockReturnValue({
         cart: ref(cart),
-        fetchCart: () => Promise.resolve(cart),
-        addToCart: vi.fn()
+        fetchCart: () => Promise.resolve(cart)
     });
-}
+};
 
 beforeEach(() => {
     // useAsyncData caches by key across mounts: reset between tests.

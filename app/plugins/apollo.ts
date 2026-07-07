@@ -5,8 +5,10 @@ const SHOPIFY_TOKEN_HEADER = 'X-Shopify-Storefront-Access-Token';
 
 /*
  * Apollo client for the Shopify Storefront API, provided as $shopify.
- * Transport only: app state lives in Pinia stores as contract shapes,
- * so queries always hit the network instead of Apollo's cache.
+ * Transport only: app state lives in Pinia stores as contract shapes and
+ * response caching is handled by useCachedAsyncData, so Apollo runs with
+ * no-cache (the InMemoryCache instance is required by the constructor but
+ * never written to or read).
  */
 export default defineNuxtPlugin(() => {
     const { shopifyEndpoint, shopifyToken } = useRuntimeConfig().public;
@@ -20,7 +22,9 @@ export default defineNuxtPlugin(() => {
                 }),
                 cache: new InMemoryCache(),
                 defaultOptions: {
-                    query: { fetchPolicy: 'network-only' }
+                    query: { fetchPolicy: 'no-cache' },
+                    watchQuery: { fetchPolicy: 'no-cache' },
+                    mutate: { fetchPolicy: 'no-cache' }
                 }
             })
         }
