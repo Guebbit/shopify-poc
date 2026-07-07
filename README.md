@@ -1,3 +1,12 @@
+# Risposta gestione regalo/messaggio
+
+Inizialmente avrei seguito l'approccio che ho sempre seguito negli ecommerce del fashion: creare varianti light.
+Ovvero quando un prodotto viene dinamicamente trasformato in un "finto nuovo prodotto" in base alle varianti che gli vengono date.
+(quando un sito non ha voglia di creare un vero nuovo prodotto che estende uno già esistente)
+
+Però l'AI mi ha suggerito di usare gli attributi, un approccio più leggero e già standard dello storefront API.
+Ho pensato che fosse una buona idea in questo caso.
+
 # shopify-poc
 
 A Nuxt 4 storefront proof-of-concept: one product detail page and one cart, backed by

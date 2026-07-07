@@ -1,11 +1,18 @@
 # Languages the store actually publishes (Shopify Markets settings).
 # Drives the language switcher so we never offer a locale with an untranslated
 # catalog; endonymName is the switcher's option label.
+# `localization.availableLanguages` alone only covers the *active* country, which
+# Shopify geolocates from the caller's IP when no @inContext country is pinned -
+# on a flaky/VPN connection this makes the list flicker between markets. Reading
+# every country's own availableLanguages instead and deduping gives the full,
+# connection-independent set of languages the store publishes anywhere.
 query Localization {
     localization {
-        availableLanguages {
-            isoCode
-            endonymName
+        availableCountries {
+            availableLanguages {
+                isoCode
+                endonymName
+            }
         }
     }
 }
