@@ -25,6 +25,12 @@
         "backToProduct": "back to the product",
         "quantity": "Qty {count}",
         "giftWrapped": "Gift wrapped",
-        "subtotal": "Subtotal: {amount}"
+        "subtotal": "Subtotal: {amount}",
+        "metaDescription": "Review the items in your cart, check gift wrap options, and proceed to checkout."
+    },
+    "seo": {
+        "siteName": "Wine Shop",
+        "defaultDescription": "Shop our wine online: browse the product, add gift wrap with a personal message, then check out securely.",
+        "productDescription": "{title} by {vendor} — order online with optional gift wrapping and secure checkout."
     }
 }

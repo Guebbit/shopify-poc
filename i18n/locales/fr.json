@@ -25,6 +25,12 @@
         "backToProduct": "retour au produit",
         "quantity": "Qté {count}",
         "giftWrapped": "Emballé en cadeau",
-        "subtotal": "Sous-total : {amount}"
+        "subtotal": "Sous-total : {amount}",
+        "metaDescription": "Vérifiez les articles de votre panier, l'emballage cadeau, puis passez commande."
+    },
+    "seo": {
+        "siteName": "Boutique de vin",
+        "defaultDescription": "Achetez notre vin en ligne : découvrez le produit, ajoutez un emballage cadeau avec un message personnel, puis passez commande en toute sécurité.",
+        "productDescription": "{title} de {vendor} — à commander en ligne avec emballage cadeau optionnel et paiement sécurisé."
     }
 }

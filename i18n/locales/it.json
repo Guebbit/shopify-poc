@@ -25,6 +25,12 @@
         "backToProduct": "torna al prodotto",
         "quantity": "Qtà {count}",
         "giftWrapped": "Confezione regalo",
-        "subtotal": "Subtotale: {amount}"
+        "subtotal": "Subtotale: {amount}",
+        "metaDescription": "Rivedi gli articoli nel carrello, controlla la confezione regalo e procedi al checkout."
+    },
+    "seo": {
+        "siteName": "Enoteca online",
+        "defaultDescription": "Acquista il nostro vino online: scopri il prodotto, aggiungi la confezione regalo con un messaggio personale e completa l'ordine in sicurezza.",
+        "productDescription": "{title} di {vendor} — acquistalo online con confezione regalo opzionale e checkout sicuro."
     }
 }

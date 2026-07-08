@@ -25,6 +25,12 @@
         "backToProduct": "volver al producto",
         "quantity": "Cant. {count}",
         "giftWrapped": "Envuelto para regalo",
-        "subtotal": "Subtotal: {amount}"
+        "subtotal": "Subtotal: {amount}",
+        "metaDescription": "Revisa los artículos de tu carrito, comprueba el envoltorio de regalo y finaliza la compra."
+    },
+    "seo": {
+        "siteName": "Tienda de vino",
+        "defaultDescription": "Compra nuestro vino online: descubre el producto, añade envoltorio de regalo con un mensaje personal y completa el pedido de forma segura.",
+        "productDescription": "{title} de {vendor} — cómpralo online con envoltorio de regalo opcional y pago seguro."
     }
 }

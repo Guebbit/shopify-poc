@@ -3,7 +3,7 @@
  * App shell: layout + app-wide i18n side effects.
  * Header UI lives in AppHeader / LanguageSwitcher.
  */
-const { locale } = useI18n();
+const { t, locale } = useI18n();
 const cartStore = useCartStore();
 
 // <html lang> + hreflang/og:locale meta: not automatic, must be wired per the module's SEO guide.
@@ -11,8 +11,16 @@ const i18nHead = useLocaleHead();
 useHead(() => ({
     htmlAttrs: { lang: i18nHead.value.htmlAttrs?.lang },
     link: i18nHead.value.link,
-    meta: i18nHead.value.meta
+    meta: i18nHead.value.meta,
+    // Site-wide fallback title/suffix; pages set their own <title> which wins over this default.
+    titleTemplate: (title) => (title ? `${title} — ${t('seo.siteName')}` : t('seo.siteName'))
 }));
+
+// Default meta description (PageSpeed requires one on every page); pages override with
+// something more specific once their data loads.
+useSeoMeta({
+    description: () => t('seo.defaultDescription')
+});
 
 // Language switch: re-pin the cart to the new locale's market (pricing, checkout
 // language). Non-critical: locale-keyed pages refetch anyway.

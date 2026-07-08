@@ -18,6 +18,11 @@ const { pending, error } = useCachedAsyncData(
     cartStore.fetchCart,
     CART_TTL_MS
 );
+
+useSeoMeta({
+    title: () => t('cart.title'),
+    description: () => t('cart.metaDescription')
+});
 </script>
 
 <template>

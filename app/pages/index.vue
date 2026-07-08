@@ -28,6 +28,19 @@ useHead(() => ({
         : []
 }));
 
+// Product-specific title/description; falls back to the site defaults (see app.vue)
+// while loading or on error.
+useSeoMeta({
+    title: () => product.value?.title,
+    description: () =>
+        product.value
+            ? t('seo.productDescription', {
+                  title: product.value.title,
+                  vendor: product.value.vendor
+              })
+            : undefined
+});
+
 const adding = ref(false);
 const added = ref(false);
 const addError = ref<string | undefined>();
