@@ -17,11 +17,11 @@ two.
 
 The app never lets Shopify's GraphQL shapes leak past the composables/stores that call
 them. Everything above that line (pages, components, tests) only ever sees types drawn
-from `api/rest/openapi.yaml` — a spec this repo owns and controls, separate from
+from `contracts/rest/openapi.yaml` — a spec this repo owns and controls, separate from
 Shopify's schema, which it doesn't. Two code generators exist because there are two
 separate sources of truth:
 
-- **`npm run genapi`** (orval) turns `api/rest/openapi.yaml` into TS types (`@api`) and
+- **`npm run genapi`** (orval) turns `contracts/rest/openapi.yaml` into TS types (`@api`) and
   zod schemas (`@api/schemas`) — the domain contract.
 - **`npm run gengql`** (graphql-codegen) turns Shopify's live schema into typed query
   documents (`@api/graphql`) — the transport.
@@ -72,7 +72,7 @@ Admin API token.
 
 ```bash
 npm install
-npm run genapi      # generates api/rest/generated/** from openapi.yaml — do this once, and again whenever you edit the spec
+npm run genapi      # generates contracts/rest/generated/** from openapi.yaml — do this once, and again whenever you edit the spec
 npm run dev
 ```
 
@@ -84,7 +84,7 @@ committed pre-generated in a fresh clone. `npm run build` runs it automatically
 (`"build": "npm run genapi && npm run build-only"`); `npm run dev` does not, so run it
 yourself first.
 
-If you also need to touch the Shopify GraphQL documents under `api/graphql/*.graphql`,
+If you also need to touch the Shopify GraphQL documents under `contracts/graphql/*.graphql`,
 regenerate their types too:
 
 ```bash
@@ -105,7 +105,7 @@ editing a `.graphql` document and commit the regenerated file yourself.
 | `npm run test:e2e`          | Boots `dev`, runs Cypress against it, tears down                                                   |
 | `npm run test`              | unit + e2e                                                                                         |
 | `npm run lint` / `lint:fix` | ESLint                                                                                             |
-| `npm run lint:openapi`      | Spectral lint on `api/rest/openapi.yaml`                                                           |
+| `npm run lint:openapi`      | Spectral lint on `contracts/rest/openapi.yaml`                                                     |
 | `npm run type-check-only`   | `vue-tsc --noEmit`                                                                                 |
 | `npm run complete`          | build + lint:fix + lint:openapi + prettier:fix + test — the "make it all green" script             |
 | `npm run complete:check`    | read-only version of the above (lint, prettier:check, type-check) — closest local equivalent to CI |
@@ -130,7 +130,7 @@ This builds `.docker/Dockerfile.dev`, bind-mounts the repo into `/app` (with
 and runs `npm run dev -- --host 0.0.0.0` so the published port is reachable from the
 host. Same `.env` as local npm — the container reads it via `docker-compose.yml`'s
 `environment:` passthrough for `APP_PORT`; Shopify vars come from Nuxt's own `.env`
-loading inside the container. Edits to `app/`, `api/`, etc. on the host hot-reload
+loading inside the container. Edits to `app/`, `contracts/`, etc. on the host hot-reload
 exactly like `npm run dev` would locally.
 
 ### Prod image (opt-in profile)
@@ -150,7 +150,7 @@ Nitro's `node-server` preset reads `runtimeConfig` from process env.
 
 `gengql` is deliberately not part of the image build — regenerating the GraphQL
 transport needs a live connection to a real Shopify store with valid credentials, which
-a build stage shouldn't depend on. The committed `api/graphql/generated/graphql.ts` is
+a build stage shouldn't depend on. The committed `contracts/graphql/generated/graphql.ts` is
 what ships. Details: [docs/graphql-codegen.md](docs/graphql-codegen.md).
 
 ### Smoke-testing the prod image

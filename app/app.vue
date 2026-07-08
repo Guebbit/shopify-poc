@@ -24,7 +24,7 @@ watch(locale, () => {
 <template>
     <div class="min-h-screen bg-neutral-100 font-sans text-neutral-900 antialiased">
         <NuxtRouteAnnouncer />
-        <AppHeader />
+        <LayoutAppHeader />
         <main class="mx-auto max-w-5xl px-4 py-8 sm:px-6">
             <NuxtPage />
         </main>

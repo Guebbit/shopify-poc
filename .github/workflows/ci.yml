@@ -112,7 +112,7 @@ jobs:
               run: npm run lint:openapi
 
     api-freshness:
-        # Verify the committed generated API client is up-to-date with api/rest/openapi.yaml.
+        # Verify the committed generated API client is up-to-date with contracts/rest/openapi.yaml.
         runs-on: ubuntu-latest
         timeout-minutes: 10
         permissions:
@@ -134,8 +134,8 @@ jobs:
             - name: Check generated API client is fresh
               run: |
                   npm run genapi
-                  if ! git diff --exit-code -- api/; then
-                      echo "Generated api/ is stale. Run 'npm run genapi' and commit the changes."
+                  if ! git diff --exit-code -- contracts/; then
+                      echo "Generated contracts/ is stale. Run 'npm run genapi' and commit the changes."
                       exit 1
                   fi
 

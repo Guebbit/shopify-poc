@@ -61,7 +61,7 @@ const onAddToCart = (): void => {
 
             <ProductGiftOptions v-model:gift-wrap="giftWrap" v-model:gift-message="giftMessage" />
 
-            <AddToCartButton
+            <ProductAddToCartButton
                 :adding="adding"
                 :available-for-sale="product.variant.availableForSale"
                 @click="onAddToCart"

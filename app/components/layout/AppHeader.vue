@@ -31,7 +31,7 @@ onMounted(() => {
             />
         </NuxtLink>
         <nav class="flex items-center gap-2 sm:gap-4">
-            <LanguageSwitcher />
+            <LayoutLanguageSwitcher />
             <!-- Material text button on dark surface, with cart count badge. -->
             <NuxtLink
                 :to="localePath('cart')"

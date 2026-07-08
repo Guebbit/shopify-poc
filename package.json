@@ -13,7 +13,7 @@
         "gengql": "graphql-codegen --config codegen.ts",
         "lint": "eslint",
         "lint:fix": "eslint --fix",
-        "lint:openapi": "spectral lint api/rest/openapi.yaml --ruleset spectral.yaml",
+        "lint:openapi": "spectral lint contracts/rest/openapi.yaml --ruleset spectral.yaml",
         "prettier": "npx prettier .",
         "prettier:check": "npx prettier --check .",
         "prettier:fix": "npx prettier . --write",

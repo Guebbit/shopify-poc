@@ -63,17 +63,19 @@ export default defineNuxtConfig({
         port: Number(process.env.APP_PORT) || 8080
     },
 
-    // api/ holds the contract layer, one folder per protocol (authored spec/documents + generated/),
-    // kept outside app/ — orval contract types + zod (see orval.config.ts) under api/rest/,
-    // graphql-codegen Shopify transport (see codegen.ts) under api/graphql/.
+    // contracts/ holds the contract layer, one folder per protocol (authored spec/documents + generated/),
+    // kept outside app/ — orval contract types + zod (see orval.config.ts) under contracts/rest/,
+    // graphql-codegen Shopify transport (see codegen.ts) under contracts/graphql/.
     // Longest aliases first: '@api' would otherwise shadow the others (order-based matching).
     // Absolute paths: Vite resolves relative alias targets against the importer, not the root.
     alias: {
-        '@api/graphql': fileURLToPath(new URL('api/graphql/generated/graphql.ts', import.meta.url)),
-        '@api/schemas': fileURLToPath(
-            new URL('api/rest/generated/schemas.zod.ts', import.meta.url)
+        '@api/graphql': fileURLToPath(
+            new URL('contracts/graphql/generated/graphql.ts', import.meta.url)
         ),
-        '@api': fileURLToPath(new URL('api/rest/generated/types/index.ts', import.meta.url))
+        '@api/schemas': fileURLToPath(
+            new URL('contracts/rest/generated/schemas.zod.ts', import.meta.url)
+        ),
+        '@api': fileURLToPath(new URL('contracts/rest/generated/types/index.ts', import.meta.url))
     },
 
     runtimeConfig: {

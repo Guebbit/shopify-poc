@@ -10,11 +10,11 @@ Two generators, two very different trust levels:
 
 | | `genapi` (orval) | `gengql` (graphql-codegen) |
 |---|---|---|
-| Source | `api/rest/openapi.yaml`, a file in this repo | Shopify's live Storefront schema, fetched by introspection |
+| Source | `contracts/rest/openapi.yaml`, a file in this repo | Shopify's live Storefront schema, fetched by introspection |
 | Needs network? | No — reads a local file | Yes — HTTPS request to `NUXT_PUBLIC_SHOPIFY_ENDPOINT` |
 | Needs secrets? | No | Yes — `NUXT_PUBLIC_SHOPIFY_TOKEN` |
 | Verified fresh in CI? | ✅ `api-freshness` job in `ci.yml` | ❌ no equivalent job |
-| Output | `api/rest/generated/**` (types + zod) | `api/graphql/generated/graphql.ts` |
+| Output | `contracts/rest/generated/**` (types + zod) | `contracts/graphql/generated/graphql.ts` |
 
 `ci.yml`'s `api-freshness` job runs `npm run genapi` and fails the build if that produces
 a diff — the committed contract types can never silently drift from `openapi.yaml`,
@@ -42,7 +42,7 @@ otherwise. See [docs/contracts.md](contracts.md) for the fuller ownership argume
 
 ## What this means in practice
 
-- `api/graphql/generated/graphql.ts` is committed, like the orval output, but CI takes it
+- `contracts/graphql/generated/graphql.ts` is committed, like the orval output, but CI takes it
   on faith.
 - `.docker/Dockerfile.prod` explicitly does **not** run `gengql` during the image build
   (`RUN npm run build` only runs `genapi` — see the Dockerfile comment) — regenerating
@@ -50,7 +50,7 @@ otherwise. See [docs/contracts.md](contracts.md) for the fuller ownership argume
 - Drift between the committed file and Shopify's real schema is **not caught until
   someone runs `npm run gengql` locally** (which needs a working `.env`) and sees a diff,
   or until a query breaks at runtime because a field/type changed upstream.
-- When you hand-edit a `.graphql` document under `api/graphql/*.graphql`, you must run
+- When you hand-edit a `.graphql` document under `contracts/graphql/*.graphql`, you must run
   `npm run gengql` locally (with valid `.env` credentials) and commit the regenerated
   `graphql.ts` yourself — nothing will remind you in a PR.
 

@@ -23,7 +23,7 @@ export default defineConfigWithVueTs(
         'dist-ssr',
         'coverage',
         'docs',
-        'api',
+        'contracts',
         'node_modules',
         '.nuxt',
         '.output',

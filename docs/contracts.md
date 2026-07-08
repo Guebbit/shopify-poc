@@ -1,7 +1,7 @@
 # Two schemas, one contract — cheat sheet
 
 > **TL;DR:** GraphQL schema = what Shopify *can* give.
-> `api/rest/openapi.yaml` = what my app *promises to work with*.
+> `contracts/rest/openapi.yaml` = what my app *promises to work with*.
 > The composables translate one into the other, and zod checks it.
 
 ## The picture
@@ -9,14 +9,14 @@
 ```
         THEIRS                                MINE
 ┌─────────────────────┐          ┌──────────────────────────┐
-│  Shopify Storefront │          │  api/rest/openapi.yaml   │
+│  Shopify Storefront │          │ contracts/rest/openapi.yaml │
 │   GraphQL schema    │          │    (domain contract)     │
 │  (huge, not mine)   │          │  Product, Cart, Money…   │
 └──────────┬──────────┘          └──────────┬───────────────┘
            │ npm run gengql                 │ npm run genapi
            ▼ (graphql-codegen)              ▼ (orval)
-   typed queries in               api/rest/generated/:
-   api/graphql/generated/         TS types (@api)
+   typed queries in               contracts/rest/generated/:
+   contracts/graphql/generated/   TS types (@api)
    (@api/graphql)                 zod schemas (@api/schemas)
            │                                │
            ▼                                ▼
@@ -35,7 +35,7 @@
 
 | | graphql-codegen (`gengql`) | orval (`genapi`) |
 |---|---|---|
-| Source | Shopify's live schema | my `api/rest/openapi.yaml` |
+| Source | Shopify's live schema | my `contracts/rest/openapi.yaml` |
 | Types | what comes off the wire | my domain shapes |
 | Owner | Shopify | me |
 | Job | type the **transport** | type the **contract** + zod |

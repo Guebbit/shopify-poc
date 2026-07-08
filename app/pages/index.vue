@@ -48,15 +48,10 @@ const onAddToCart = (attributes: CartLineAttribute[]): void => {
 
 <template>
     <section>
-        <p v-if="pending" class="py-12 text-center text-neutral-500">
-            {{ t('product.loading') }}
-        </p>
-        <p
-            v-else-if="error"
-            class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-800"
-        >
+        <UiPageLoading v-if="pending">{{ t('product.loading') }}</UiPageLoading>
+        <UiAlert v-else-if="error" variant="error">
             {{ t('product.loadError', { message: error.message }) }}
-        </p>
+        </UiAlert>
         <ProductCard
             v-else-if="product"
             :product="product"
