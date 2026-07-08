@@ -11,24 +11,22 @@ Ho pensato che fosse una buona idea in questo caso.
 
 A Nuxt 4 storefront proof-of-concept: one product detail page and one cart, backed by
 Shopify's Storefront GraphQL API, with a hand-owned domain contract sitting between the
-two.
+app and that API.
 
 ## Why it's built this way
 
 The app never lets Shopify's GraphQL shapes leak past the composables/stores that call
 them. Everything above that line (pages, components, tests) only ever sees types drawn
-from `contracts/rest/openapi.yaml` — a spec this repo owns and controls, separate from
-Shopify's schema, which it doesn't. Two code generators exist because there are two
-separate sources of truth:
+from `contracts/rest/openapi.yaml` — a spec this repo owns, separate from Shopify's
+schema. Two generators, two sources of truth:
 
 - **`npm run genapi`** (orval) turns `contracts/rest/openapi.yaml` into TS types (`@api`) and
   zod schemas (`@api/schemas`) — the domain contract.
 - **`npm run gengql`** (graphql-codegen) turns Shopify's live schema into typed query
   documents (`@api/graphql`) — the transport.
 
-The adapter layer (`useProduct.ts`, `stores/cart.ts`) is where one gets mapped into the
-other, validated with zod at the boundary. Full writeup, including _why_ this is
-"contract-driven, but shifted inward": **[docs/contracts.md](docs/contracts.md)**.
+The adapter layer (`useProduct.ts`, `stores/cart.ts`) maps one into the other, validated
+with zod at the boundary. Full writeup: **[docs/contracts.md](docs/contracts.md)**.
 
 ### Read next, one topic each
 
@@ -78,11 +76,9 @@ npm run dev
 
 The app is served at `http://localhost:8080` (or `$APP_PORT`).
 
-`npm run genapi` has to run before the first `npm run dev`/type-check: the `@api` and
-`@api/schemas` aliases (`nuxt.config.ts`) point at files it generates, and they aren't
-committed pre-generated in a fresh clone. `npm run build` runs it automatically
-(`"build": "npm run genapi && npm run build-only"`); `npm run dev` does not, so run it
-yourself first.
+`npm run genapi` must run before the first `dev`/type-check: the `@api` and
+`@api/schemas` aliases (`nuxt.config.ts`) point at generated files not committed in a
+fresh clone. `npm run build` runs it automatically; `npm run dev` does not.
 
 If you also need to touch the Shopify GraphQL documents under `contracts/graphql/*.graphql`,
 regenerate their types too:
@@ -112,59 +108,12 @@ editing a `.graphql` document and commit the regenerated file yourself.
 
 ## Docker / Podman
 
-Two images, two purposes — dev mirrors `npm run dev` inside a container with your local
-source bind-mounted in; prod builds the real Nitro server bundle and ships only that.
-
-Both `docker compose` and `podman-compose` read the same `docker-compose.yml`; swap the
-binary, keep the flags.
-
-### Dev image (hot reload)
-
-```bash
-podman-compose up app
-# or: docker compose up app
-```
-
-This builds `.docker/Dockerfile.dev`, bind-mounts the repo into `/app` (with
-`/app/node_modules` kept container-local so host/container native deps don't collide),
-and runs `npm run dev -- --host 0.0.0.0` so the published port is reachable from the
-host. Same `.env` as local npm — the container reads it via `docker-compose.yml`'s
-`environment:` passthrough for `APP_PORT`; Shopify vars come from Nuxt's own `.env`
-loading inside the container. Edits to `app/`, `contracts/`, etc. on the host hot-reload
-exactly like `npm run dev` would locally.
-
-### Prod image (opt-in profile)
-
-```bash
-podman-compose --profile production up app-prod
-# or: docker compose --profile production up app-prod
-```
-
-Builds `.docker/Dockerfile.prod`: a multi-stage build that runs `npm run build` (which
-includes `genapi`, **not** `gengql` — see below) in a build stage, then ships only the
-resulting `.output/` Nitro bundle in a slim runtime stage — no `node_modules`, no source,
-no devDependencies in the final image. Shopify credentials are **not** baked into the
-image; they're read from the host env / `.env` at container _runtime_ via
-`docker-compose.yml`'s `environment:` block under the `app-prod` service, matching how
-Nitro's `node-server` preset reads `runtimeConfig` from process env.
-
-`gengql` is deliberately not part of the image build — regenerating the GraphQL
-transport needs a live connection to a real Shopify store with valid credentials, which
-a build stage shouldn't depend on. The committed `contracts/graphql/generated/graphql.ts` is
-what ships. Details: [docs/graphql-codegen.md](docs/graphql-codegen.md).
-
-### Smoke-testing the prod image
-
-```bash
-scripts/containerSmokeTest.sh
-```
-
-Builds the prod image, boots it, and asserts container-specific behavior a plain build
-success can't prove: the SSR product page actually renders locale markup
-(`lang="it-IT"`, `hreflang`) server-side, and the cart route stays a client-only shell.
-Auto-detects `docker` vs `podman` (override with `CONTAINER_ENGINE=`). See
-[docs/rendering-and-i18n.md](docs/rendering-and-i18n.md) for why those two routes render
-so differently.
+`docker-compose.yml` defines `app` (dev, hot reload) and `app-prod` (prod Nitro build,
+gated behind the `production` profile so it won't start on a plain `up`). Day-to-day
+lifecycle is wrapped in npm scripts: `podman:restart` / `docker:restart`,
+`podman:rebuild` / `docker:rebuild`, and `podman:nuke` / `docker:nuke` for when a
+rootless engine gets stuck. `scripts/containerSmokeTest.sh` smoke-tests the prod image
+against both engines.
 
 ## Testing
 

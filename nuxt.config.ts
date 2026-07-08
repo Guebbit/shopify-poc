@@ -43,7 +43,12 @@ export default defineNuxtConfig({
     // Tailwind v4: Vite plugin + single entry stylesheet (theme tokens live there).
     css: ['~/assets/css/main.css'],
     vite: {
-        plugins: [tailwindcss()]
+        plugins: [tailwindcss()],
+        // Pre-bundle deps Vite otherwise discovers lazily at runtime (triggering a page
+        // reload mid-session): Apollo client and the generated zod schemas.
+        optimizeDeps: {
+            include: ['@apollo/client', 'zod']
+        }
     },
 
     // Hybrid rendering. The PDP is server-rendered so the hreflang/lang meta and the

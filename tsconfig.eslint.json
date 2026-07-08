@@ -9,8 +9,6 @@
         "tests/**/*.ts",
         "tests/**/*.tsx",
         "tests/**/*.vue",
-        "cypress/**/*.ts",
-        "cypress.config.ts",
         "vitest.config.ts",
         "nuxt.config.ts",
         "orval.config.ts",
