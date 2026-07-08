@@ -1423,7 +1423,12 @@ export type ProductDetailQuery = {
         id: string;
         title: string;
         vendor: string;
-        featuredImage: { url: string; altText: string | null } | null;
+        featuredImage: {
+            url: string;
+            altText: string | null;
+            width: number | null;
+            height: number | null;
+        } | null;
         variants: {
             nodes: Array<{
                 id: string;
@@ -1612,7 +1617,33 @@ export const CartFieldsFragmentDoc = {
                                                                                                     name: {
                                                                                                         kind: 'Name',
                                                                                                         value: 'url'
-                                                                                                    }
+                                                                                                    },
+                                                                                                    arguments:
+                                                                                                        [
+                                                                                                            {
+                                                                                                                kind: 'Argument',
+                                                                                                                name: {
+                                                                                                                    kind: 'Name',
+                                                                                                                    value: 'transform'
+                                                                                                                },
+                                                                                                                value: {
+                                                                                                                    kind: 'ObjectValue',
+                                                                                                                    fields: [
+                                                                                                                        {
+                                                                                                                            kind: 'ObjectField',
+                                                                                                                            name: {
+                                                                                                                                kind: 'Name',
+                                                                                                                                value: 'maxWidth'
+                                                                                                                            },
+                                                                                                                            value: {
+                                                                                                                                kind: 'IntValue',
+                                                                                                                                value: '160'
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
                                                                                                 }
                                                                                             ]
                                                                                     }
@@ -1926,7 +1957,33 @@ export const CartCreateDocument = {
                                                                                                     name: {
                                                                                                         kind: 'Name',
                                                                                                         value: 'url'
-                                                                                                    }
+                                                                                                    },
+                                                                                                    arguments:
+                                                                                                        [
+                                                                                                            {
+                                                                                                                kind: 'Argument',
+                                                                                                                name: {
+                                                                                                                    kind: 'Name',
+                                                                                                                    value: 'transform'
+                                                                                                                },
+                                                                                                                value: {
+                                                                                                                    kind: 'ObjectValue',
+                                                                                                                    fields: [
+                                                                                                                        {
+                                                                                                                            kind: 'ObjectField',
+                                                                                                                            name: {
+                                                                                                                                kind: 'Name',
+                                                                                                                                value: 'maxWidth'
+                                                                                                                            },
+                                                                                                                            value: {
+                                                                                                                                kind: 'IntValue',
+                                                                                                                                value: '160'
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
                                                                                                 }
                                                                                             ]
                                                                                     }
@@ -2246,7 +2303,33 @@ export const CartLinesAddDocument = {
                                                                                                     name: {
                                                                                                         kind: 'Name',
                                                                                                         value: 'url'
-                                                                                                    }
+                                                                                                    },
+                                                                                                    arguments:
+                                                                                                        [
+                                                                                                            {
+                                                                                                                kind: 'Argument',
+                                                                                                                name: {
+                                                                                                                    kind: 'Name',
+                                                                                                                    value: 'transform'
+                                                                                                                },
+                                                                                                                value: {
+                                                                                                                    kind: 'ObjectValue',
+                                                                                                                    fields: [
+                                                                                                                        {
+                                                                                                                            kind: 'ObjectField',
+                                                                                                                            name: {
+                                                                                                                                kind: 'Name',
+                                                                                                                                value: 'maxWidth'
+                                                                                                                            },
+                                                                                                                            value: {
+                                                                                                                                kind: 'IntValue',
+                                                                                                                                value: '160'
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
                                                                                                 }
                                                                                             ]
                                                                                     }
@@ -2561,7 +2644,33 @@ export const CartBuyerIdentityUpdateDocument = {
                                                                                                     name: {
                                                                                                         kind: 'Name',
                                                                                                         value: 'url'
-                                                                                                    }
+                                                                                                    },
+                                                                                                    arguments:
+                                                                                                        [
+                                                                                                            {
+                                                                                                                kind: 'Argument',
+                                                                                                                name: {
+                                                                                                                    kind: 'Name',
+                                                                                                                    value: 'transform'
+                                                                                                                },
+                                                                                                                value: {
+                                                                                                                    kind: 'ObjectValue',
+                                                                                                                    fields: [
+                                                                                                                        {
+                                                                                                                            kind: 'ObjectField',
+                                                                                                                            name: {
+                                                                                                                                kind: 'Name',
+                                                                                                                                value: 'maxWidth'
+                                                                                                                            },
+                                                                                                                            value: {
+                                                                                                                                kind: 'IntValue',
+                                                                                                                                value: '160'
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
                                                                                                 }
                                                                                             ]
                                                                                     }
@@ -2840,7 +2949,33 @@ export const CartDocument = {
                                                                                                     name: {
                                                                                                         kind: 'Name',
                                                                                                         value: 'url'
-                                                                                                    }
+                                                                                                    },
+                                                                                                    arguments:
+                                                                                                        [
+                                                                                                            {
+                                                                                                                kind: 'Argument',
+                                                                                                                name: {
+                                                                                                                    kind: 'Name',
+                                                                                                                    value: 'transform'
+                                                                                                                },
+                                                                                                                value: {
+                                                                                                                    kind: 'ObjectValue',
+                                                                                                                    fields: [
+                                                                                                                        {
+                                                                                                                            kind: 'ObjectField',
+                                                                                                                            name: {
+                                                                                                                                kind: 'Name',
+                                                                                                                                value: 'maxWidth'
+                                                                                                                            },
+                                                                                                                            value: {
+                                                                                                                                kind: 'IntValue',
+                                                                                                                                value: '160'
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    ]
+                                                                                                                }
+                                                                                                            }
+                                                                                                        ]
                                                                                                 }
                                                                                             ]
                                                                                     }
@@ -2994,10 +3129,43 @@ export const ProductDetailDocument = {
                                     selectionSet: {
                                         kind: 'SelectionSet',
                                         selections: [
-                                            { kind: 'Field', name: { kind: 'Name', value: 'url' } },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'url' },
+                                                arguments: [
+                                                    {
+                                                        kind: 'Argument',
+                                                        name: { kind: 'Name', value: 'transform' },
+                                                        value: {
+                                                            kind: 'ObjectValue',
+                                                            fields: [
+                                                                {
+                                                                    kind: 'ObjectField',
+                                                                    name: {
+                                                                        kind: 'Name',
+                                                                        value: 'maxWidth'
+                                                                    },
+                                                                    value: {
+                                                                        kind: 'IntValue',
+                                                                        value: '800'
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                ]
+                                            },
                                             {
                                                 kind: 'Field',
                                                 name: { kind: 'Name', value: 'altText' }
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'width' }
+                                            },
+                                            {
+                                                kind: 'Field',
+                                                name: { kind: 'Name', value: 'height' }
                                             }
                                         ]
                                     }

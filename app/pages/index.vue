@@ -20,6 +20,14 @@ const {
     error
 } = useCachedAsyncData(() => `pdp-product:${locale.value}`, fetchProduct, PRODUCT_TTL_MS);
 
+// Preload the LCP image: the product resolves during SSR, so the hint lands in the
+// document head and the browser fetches the image before hydration kicks in.
+useHead(() => ({
+    link: product.value?.image
+        ? [{ rel: 'preload', as: 'image', href: product.value.image.url, fetchpriority: 'high' }]
+        : []
+}));
+
 const adding = ref(false);
 const added = ref(false);
 const addError = ref<string | undefined>();

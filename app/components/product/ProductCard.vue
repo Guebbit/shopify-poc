@@ -31,11 +31,15 @@ const onAddToCart = (): void => {
     <!-- Material card, elevation 1, split media/info on desktop. -->
     <article class="grid overflow-hidden rounded-xl bg-white shadow-sm md:grid-cols-2">
         <div class="flex items-center justify-center bg-neutral-50 p-6">
+            <!-- width/height reserve the box before load (CLS); fetchpriority marks the LCP image. -->
             <img
                 v-if="product.image"
                 class="max-h-[28rem] w-full object-contain"
                 :src="product.image.url"
                 :alt="product.image.altText ?? product.title"
+                :width="product.image.width"
+                :height="product.image.height"
+                fetchpriority="high"
             />
             <p v-else class="text-neutral-400">{{ t('product.noImage') }}</p>
         </div>

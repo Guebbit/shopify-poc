@@ -35,7 +35,19 @@ export const GetProductResponse = zod
         image: zod
             .object({
                 url: zod.url(),
-                altText: zod.string().optional()
+                altText: zod.string().optional(),
+                width: zod
+                    .number()
+                    .optional()
+                    .describe(
+                        'Intrinsic width in pixels, so the UI can reserve the image box before load (CLS).'
+                    ),
+                height: zod
+                    .number()
+                    .optional()
+                    .describe(
+                        'Intrinsic height in pixels, so the UI can reserve the image box before load (CLS).'
+                    )
             })
             .optional(),
         variant: zod.object({
@@ -121,7 +133,19 @@ export const CreateCartResponse = zod.object({
             image: zod
                 .object({
                     url: zod.url(),
-                    altText: zod.string().optional()
+                    altText: zod.string().optional(),
+                    width: zod
+                        .number()
+                        .optional()
+                        .describe(
+                            'Intrinsic width in pixels, so the UI can reserve the image box before load (CLS).'
+                        ),
+                    height: zod
+                        .number()
+                        .optional()
+                        .describe(
+                            'Intrinsic height in pixels, so the UI can reserve the image box before load (CLS).'
+                        )
                 })
                 .optional(),
             lineTotal: zod.object({
@@ -176,7 +200,19 @@ export const GetCartResponse = zod.object({
             image: zod
                 .object({
                     url: zod.url(),
-                    altText: zod.string().optional()
+                    altText: zod.string().optional(),
+                    width: zod
+                        .number()
+                        .optional()
+                        .describe(
+                            'Intrinsic width in pixels, so the UI can reserve the image box before load (CLS).'
+                        ),
+                    height: zod
+                        .number()
+                        .optional()
+                        .describe(
+                            'Intrinsic height in pixels, so the UI can reserve the image box before load (CLS).'
+                        )
                 })
                 .optional(),
             lineTotal: zod.object({
@@ -262,7 +298,19 @@ export const AddCartLinesResponse = zod.object({
             image: zod
                 .object({
                     url: zod.url(),
-                    altText: zod.string().optional()
+                    altText: zod.string().optional(),
+                    width: zod
+                        .number()
+                        .optional()
+                        .describe(
+                            'Intrinsic width in pixels, so the UI can reserve the image box before load (CLS).'
+                        ),
+                    height: zod
+                        .number()
+                        .optional()
+                        .describe(
+                            'Intrinsic height in pixels, so the UI can reserve the image box before load (CLS).'
+                        )
                 })
                 .optional(),
             lineTotal: zod.object({

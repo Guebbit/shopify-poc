@@ -19,4 +19,8 @@
 export interface ProductImage {
   url: string;
   altText?: string;
+  /** Intrinsic width in pixels, so the UI can reserve the image box before load (CLS). */
+  width?: number;
+  /** Intrinsic height in pixels, so the UI can reserve the image box before load (CLS). */
+  height?: number;
 }

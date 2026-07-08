@@ -6,9 +6,14 @@ query ProductDetail($id: ID!, $language: LanguageCode!, $country: CountryCode!)
         id
         title
         vendor
+        # transform: the CDN downscales on the fly (original uploads are multi-MB) and,
+        # with a width set, content-negotiates WebP/AVIF from the browser's Accept header.
+        # width/height are the original dimensions: only the aspect ratio matters (CLS box).
         featuredImage {
-            url
+            url(transform: { maxWidth: 800 })
             altText
+            width
+            height
         }
         variants(first: 1) {
             nodes {

@@ -29,8 +29,9 @@ fragment CartFields on Cart {
                     product {
                         title
                         vendor
+                        # Rendered as an 80px thumbnail: 160 covers 2x displays.
                         featuredImage {
-                            url
+                            url(transform: { maxWidth: 160 })
                         }
                     }
                 }

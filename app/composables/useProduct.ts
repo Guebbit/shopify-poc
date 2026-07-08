@@ -41,7 +41,9 @@ export const useProduct = () => {
                     image: product.featuredImage
                         ? {
                               url: product.featuredImage.url,
-                              altText: product.featuredImage.altText ?? undefined
+                              altText: product.featuredImage.altText ?? undefined,
+                              width: product.featuredImage.width ?? undefined,
+                              height: product.featuredImage.height ?? undefined
                           }
                         : undefined,
                     variant: {

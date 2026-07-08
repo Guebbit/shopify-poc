@@ -106,6 +106,12 @@ components:
                     format: uri
                 altText:
                     type: string
+                width:
+                    type: integer
+                    description: Intrinsic width in pixels, so the UI can reserve the image box before load (CLS).
+                height:
+                    type: integer
+                    description: Intrinsic height in pixels, so the UI can reserve the image box before load (CLS).
 
         ProductVariant:
             type: object

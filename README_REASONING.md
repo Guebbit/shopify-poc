@@ -45,4 +45,5 @@ Prima di partire per il viaggio mi stavo studiando una nuova strategia simile ma
 
 ---
 
-Note: La mia connessione è piuttosto debole, non riesco a testare i container docker perché il download dell'immagine ci mette troppo e salta spesso.
+Update: ricordando il dubbio sulle metriche SEO, che sono un po' arrugginito ma posso tranquillamente gestire, ho fatto un po' di ricerca all'infuori delle best practice (di cui 1 l'avevo dimenticata o data per scontata in questo setting) e ho effettuato un fix migliorativo + cambiato il server di Vercel.
+Lighthouse e Pagespeed danno un ottimo voto (poi vabé, capisco che l'applicazione è piccola, ma appena torno un po' nel workflow della SEO, oltre a fare un po' di ricerca per aggiornarmi, si risolve tutto)
